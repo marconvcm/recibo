@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Recibo</string>
+    <string-array name="casas">
+        <item>Casa 01</item>
+        <item>Casa 02</item>
+        <item>Casa 03</item>
+        <item>Casa 04</item>
+        <item>Casa 05</item>
+        <item>Casa 06</item>
+        <item>Casa 07</item>
+        <item>Casa 08</item>
+    </string-array>
+</resources>
