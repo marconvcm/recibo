@@ -1,96 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="model" type="br.com.htmind.receipt.vm.ReceiptViewModel"/>
+        <variable
+            name="model"
+            type="br.com.htmind.receipt.vm.ReceiptViewModel" />
     </data>
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MainActivity">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
         <EditText
-                android:id="@+id/editTextAmount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/input_background"
-                android:ems="10"
-                android:hint="Valor"
-                android:text="@={model.amount}"
-                android:inputType="numberDecimal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextPayer"/>
+            android:id="@+id/editTextAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/input_background"
+            android:ems="10"
+            android:hint="Valor"
+            android:inputType="numberDecimal"
+            android:text="@={model.amount}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPayer" />
 
         <EditText
-                android:id="@+id/editTextPayer"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/input_background"
-                android:hint="Selecione a casa"
-                android:focusable="false"
-                android:text="@={model.payer}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/editTextPayer"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/input_background"
+            android:focusable="false"
+            android:hint="Selecione a casa"
+            android:text="@={model.payer}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-                android:id="@+id/editTextRefers"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/input_background"
-                android:ems="10"
-                android:text="@={model.refers}"
-                android:hint="Pagamento referente a..."
-                android:singleLine="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextAmount"/>
+            android:id="@+id/editTextRefers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/input_background"
+            android:ems="10"
+            android:hint="Pagamento referente a..."
+            android:singleLine="true"
+            android:text="@={model.refers}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAmount" />
 
         <Button
-                android:id="@+id/btnSend"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/button_background"
-                android:text="Enviar"
-
-                app:layout_constraintEnd_toEndOf="@+id/editTextRefers"
-                app:layout_constraintTop_toBottomOf="@+id/editTextRefers" />
+            android:id="@+id/btnSend"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background"
+            android:text="Enviar"
+            android:onClick="@{()-> model.submit()}"
+            app:layout_constraintEnd_toEndOf="@+id/editTextRefers"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRefers" />
 
         <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:onClick="@{()-> model.say()}"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/button_background"
-                android:text="Cancelar"
-                app:layout_constraintEnd_toStartOf="@+id/btnSend"
-                app:layout_constraintTop_toBottomOf="@+id/editTextRefers" />
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/button_background"
+            android:onClick="@{()-> model.reset()}"
+            android:text="Cancelar"
+            app:layout_constraintEnd_toStartOf="@+id/btnSend"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRefers" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
+
 </layout>

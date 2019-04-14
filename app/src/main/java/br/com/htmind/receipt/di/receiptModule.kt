@@ -1,5 +1,6 @@
 package br.com.htmind.receipt.di
 
+import br.com.htmind.receipt.service.PDFService
 import br.com.htmind.receipt.service.PDFServiceImpl
 import br.com.htmind.receipt.service.ReceiptService
 import br.com.htmind.receipt.service.ReceiptServiceImpl
@@ -9,8 +10,8 @@ import org.koin.dsl.module
 
 val receiptModule = module {
 
-    single { PDFServiceImpl() }
-    single { ReceiptServiceImpl() as ReceiptService }
+    single { PDFServiceImpl(get()) as PDFService }
+    single { ReceiptServiceImpl(get()) as ReceiptService }
 
-    viewModel { ReceiptViewModel() }
+    viewModel { ReceiptViewModel(get()) }
 }
