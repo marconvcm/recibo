@@ -1,33 +1,23 @@
 package br.com.htmind.receipt
 
 import android.Manifest
-import android.app.Activity
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import br.com.htmind.receipt.databinding.ActivityMainBinding
-
 import br.com.htmind.receipt.vm.ReceiptViewModel
-import kotlinx.android.synthetic.main.activity_main.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Environment
-import android.os.Environment.*
+import androidx.core.content.ContextCompat
 import java.io.File
-
+import android.os.StrictMode
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,10 +25,15 @@ class MainActivity : AppCompatActivity() {
 
     val model by viewModel<ReceiptViewModel>()
 
-    var dialog: DialogInterface? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder().build())
+        if(hasPermissions()) {
+            bootstrap()
+        }
+    }
+
+    fun bootstrap() {
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         title = getString(br.com.htmind.receipt.R.string.recibo_activity_title)
         binding.model = model
@@ -56,11 +51,9 @@ class MainActivity : AppCompatActivity() {
                 show()
             }
         }
-
         model.loading.observe(this, Observer { value ->
             Log.d("MARCOS", "loading: $value")
         })
-
         model.pdfFilePath.observe(this, Observer { value ->
             when(value) {
                 is String -> {
@@ -68,31 +61,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
 
-        model.hasWritePermission.observe(this, Observer { value ->
-            if(!value) {
-                ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
-            }
-        })
+    fun hasPermissions(): Boolean {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+            return false
+        }
+        return true
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        var grant = grantResults
-        grant += requestCode
-        when(grant) {
-            intArrayOf(PermissionChecker.PERMISSION_GRANTED, 100) -> {
-                model.submit()
-            }
+        if (grantResults.contains(PackageManager.PERMISSION_GRANTED) && requestCode.equals(100)) {
+            bootstrap()
         }
     }
 
     private fun shareFileOnWhatsApp(filePath: String) {
-        val outputFile = File(filePath)
-        val uri = Uri.fromFile(outputFile)
         val share = Intent()
         share.action = Intent.ACTION_SEND
         share.type = "application/pdf"
-        share.putExtra(Intent.EXTRA_STREAM, uri)
+        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
         share.setPackage("com.whatsapp")
         startActivity(share)
     }

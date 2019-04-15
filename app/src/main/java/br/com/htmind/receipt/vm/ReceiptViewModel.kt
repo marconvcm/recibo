@@ -19,8 +19,7 @@ class ReceiptViewModel(val receiptService: ReceiptService): ViewModel() {
     var refers = MutableLiveData<String>()
     var loading = MutableLiveData<Boolean>()
 
-    var hasWritePermission = MutableLiveData<Boolean>()
-    var pdfFilePath = MutableLiveData<String?>()
+    var pdfFilePath = MutableLiveData<String>()
 
     init {
         loading.postValue(false)
@@ -45,10 +44,7 @@ class ReceiptViewModel(val receiptService: ReceiptService): ViewModel() {
     }
 
     private fun handleSendError(error: Throwable) {
-        when(error.message) {
-            "WRITE_EXTERNAL_STORAGE_NO_GRANTED" -> hasWritePermission.postValue(false)
-            else -> throw error
-        }
+
     }
 
     private fun buildReceipt(): Receipt = Receipt(
