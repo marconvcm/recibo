@@ -1,6 +1,7 @@
 package br.com.htmind.receipt.service
 
 import android.content.Context
+import android.os.Environment
 import br.com.htmind.receipt.model.Receipt
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
@@ -11,7 +12,7 @@ import java.io.FileOutputStream
 
 class PDFServiceImpl(val context: Context) : PDFService {
 
-    val filePath by lazy { File(context.filesDir, "myfile.pdf") }
+    val filePath by lazy { File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "receipt.pdf") }
 
     override fun generate(receipt: Receipt): Observable<String> = Observable.create { emitter ->
         val document = Document()

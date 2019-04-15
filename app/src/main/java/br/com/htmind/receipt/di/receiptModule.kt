@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val receiptModule = module {
 
     single { PDFServiceImpl(get()) as PDFService }
-    single { ReceiptServiceImpl(get()) as ReceiptService }
+    single { ReceiptServiceImpl(get(), get()) as ReceiptService }
 
     viewModel { ReceiptViewModel(get()) }
 }
