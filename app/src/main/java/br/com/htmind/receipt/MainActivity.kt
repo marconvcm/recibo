@@ -18,6 +18,10 @@ import android.net.Uri
 import androidx.core.content.ContextCompat
 import java.io.File
 import android.os.StrictMode
+import android.content.ActivityNotFoundException
+import android.os.Environment.getExternalStorageDirectory
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -78,11 +82,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shareFileOnWhatsApp(filePath: String) {
-        val share = Intent()
-        share.action = Intent.ACTION_SEND
-        share.type = "application/pdf"
-        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
-        share.setPackage("com.whatsapp")
-        startActivity(share)
+
+//        val share = Intent()
+//        share.action = Intent.ACTION_SEND
+//        share.type = "application/pdf"
+//        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(filePath)))
+//        startActivity(share)
+
+        val target = Intent(Intent.ACTION_VIEW)
+        target.setDataAndType(Uri.fromFile(File(filePath)), "application/pdf")
+        target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        val intent = Intent.createChooser(target, "Send Receipt")
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            // Instruct the user to install a PDF reader here, or something
+        }
     }
 }
